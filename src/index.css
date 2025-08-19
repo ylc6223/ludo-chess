@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* 棋盘专用样式 */
+.chess-board {
+  display: grid;
+  grid-template-columns: repeat(17, 1fr);
+  grid-template-rows: repeat(17, 1fr);
+  gap: 1px;
+  background-color: #424242;
+  padding: 2px;
+  max-width: 600px;
+  max-height: 600px;
+  margin: 0 auto;
+}
+
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .chess-board-container {
+    max-width: 90vw;
+    max-height: 90vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .chess-board-container {
+    max-width: 95vw;
+    max-height: 95vw;
+  }
+  
+  .chess-cell {
+    font-size: 6px;
+  }
+}
+
+.chess-board-15 {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  gap: 1px;
+  background-color: #424242;
+  padding: 2px;
+  width: 100%;
+  height: 100%;
+}
+
+.chess-board-17 {
+  display: grid;
+  grid-template-columns: repeat(17, 1fr);
+  grid-template-rows: repeat(17, 1fr);
+  gap: 1px;
+  background-color: #424242;
+  padding: 2px;
+  width: 100%;
+  height: 100%;
+}
+
+.chess-cell {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 1px solid #424242;
+  font-size: 8px;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.chess-cell.empty {
+  background-color: transparent;
+  border: none;
+  z-index: 10;
+}
+
+.chess-cell.normal {
+  background-color: #F5F5F5;
+  border: 1px solid #666666;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.chess-cell.normal:hover {
+  background-color: #EEEEEE;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.chess-cell.player-red {
+  background: linear-gradient(135deg, #E53935 0%, #C62828 100%);
+  color: white;
+  border: 1px solid #B71C1C;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.chess-cell.player-green {
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+  color: white;
+  border: 1px solid #1B5E20;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.chess-cell.player-blue {
+  background: linear-gradient(135deg, #1E88E5 0%, #1565C0 100%);
+  color: white;
+  border: 1px solid #0D47A1;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.chess-cell.player-yellow {
+  background: linear-gradient(135deg, #FDD835 0%, #F9A825 100%);
+  color: black;
+  border: 1px solid #F57F17;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.chess-cell.camp {
+  border: 2px solid #424242;
+  position: relative;
+  border-radius: 50%;
+  background: #F8F8F8;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.chess-cell.camp.hidden {
+  background: transparent !important;
+  color: transparent !important;
+}
+
+.chess-cell.entrance {
+  border: 2px solid #424242;
+  position: relative;
+  background: #F8F8F8;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.chess-cell.entrance.hidden {
+  background: transparent !important;
+  color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.chess-cell.entrance.hidden::after {
+  display: none;
+}
+
+.chess-cell.entrance::after {
+  content: '▲';
+  position: absolute;
+  font-size: 12px;
+  color: #43A047;
+  font-weight: bold;
+}
+
+.chess-cell.headquarters {
+  border: 3px solid #424242;
+  position: relative;
+  background: transparent;
+  box-shadow: none;
+}
+
+.chess-cell.headquarters.hidden {
+  background: transparent !important;
+  color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.chess-cell.headquarters.hidden::after {
+  display: none;
+}
+
+.chess-cell.headquarters::after {
+  content: '★';
+  position: absolute;
+  font-size: 16px;
+  color: #424242;
+  font-weight: bold;
+}
+
+/* 铁路线样式 - 简化处理 */
+.chess-cell.railway {
+  position: relative;
+}
+
+/* 优化棋盘整体外观 */
+.chess-board-container {
+  position: relative;
+  width: 1040px;  /* 17*40 + 16*20 + 40(padding) = 680 + 320 + 40 = 1040px */
+  height: 1040px;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  overflow: visible;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  padding: 20px;
+}
+
+.chess-board-17 {
+  display: grid;
+  grid-template-columns: repeat(17, 40px);
+  grid-template-rows: repeat(17, 40px);
+  gap: 20px;  /* 调整间距为单元格宽度的一半 */
+  background-color: transparent;
+  padding: 0;
+  width: 1000px;  /* 17*40 + 16*20 = 680 + 320 = 1000px */
+  height: 1000px;
+  border-radius: 4px;
+  position: relative;
+}
+
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
